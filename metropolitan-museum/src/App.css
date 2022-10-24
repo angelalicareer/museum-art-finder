@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+.picture {
+  transform: translate3d(-34.6307px, 0px, 0px) scale3d(0.780278, 0.780278, 1);
+    z-index: 8
+}
