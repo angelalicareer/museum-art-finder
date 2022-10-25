@@ -40,3 +40,45 @@
   transform: translate3d(-34.6307px, 0px, 0px) scale3d(0.780278, 0.780278, 1);
     z-index: 8
 }
+
+#nav {
+  margin: 20px;
+}
+
+#nav button {
+  margin: 5px;
+}
+
+.picks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: auto;
+}
+
+.picks img {
+  width: 95%;
+}
+
+#departmentGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.imageContainer {
+  height: 310px;
+  overflow: hidden;
+}
+
+.card {
+  margin: 5px;
+}
+
+.map-one {
+  text-align: center;
+  border: 1px solid black;
+  width: 90vw;
+  height: 65vh;
+  padding: 5px;
+  margin: auto;
+  margin-bottom: 5px;
+}
