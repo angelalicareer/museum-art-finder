@@ -1,47 +1,39 @@
-import React from "react"
+import {useState,useEffect} from 'react'
 
-class ObjectGrid extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      objIds: props.objs,
-      objInfo: []
+function ObjectGrid(props) {
+  const [objsInfo, setObjsInfo] = useState([])
+
+  const getResults = objs => {
+    for (var i = 0; i < objs.length; i++) {
+      fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objs[i]}`)
+        .then(res => res.json()).then(res => {
+          if (res.objectID != null && res.primaryImageSmall !== "") {
+            setObjsInfo(arr => [...arr, res])
+          }
+        })
     }
-
-    this.changeContentFunc = props.changeContent
   }
+  
+  useEffect(() => {
+    getResults(props.objIds)
+  }, [props.objIds])
 
-  componentDidMount() {
-    let objIds = this.state.objIds
-    let objInfo = [];
-    var fetches = [];
-    for (var i = 0; i < objIds.length; i++) {
-      fetches.push(fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objIds[i]}`).then(res => res.json()).then(res => objInfo.push(res)))
-    }
-
-    Promise.all(fetches).then(() => this.setState({
-      objInfo: objInfo
-    }))
-  }
-
-  render() {
-    return (
-      <div className='cardGrid'>
-        {this.state.objInfo.filter(o => o.objectID != null && o.primaryImageSmall !== "").map(o => {
-          return (
-            <div className="card" key={o.objectID}>
-              <div className="imageContainer">
-                <img src={o.primaryImageSmall} className="card-img-top" alt="..." />
-              </div>
-              <div className="card-body">
-                <button onClick={() => this.changeContentFunc('page', [], o)}>{o.title}</button>
-              </div>
+  return (
+    <div className='cardGrid'>
+      {objsInfo.map(o => {
+        return (
+          <div className="card" key={o.objectID}>
+            <div className="imageContainer">
+              <img src={o.primaryImageSmall} className="card-img-top" alt="..." />
             </div>
-          )
-        })}
-      </div>
-    )
-  }
+            <div className="card-body">
+              <button onClick={() => console.log('hello')}>{o.title}</button>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export default ObjectGrid

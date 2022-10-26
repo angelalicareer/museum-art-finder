@@ -1,18 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import {useNavigate} from 'react-router-dom';
 
 function Deparments(props) {
   const [departments, setDepartments] = useState([])
+  const navigate = useNavigate();
 
-  const getQuery = () => {
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    return characters.charAt(Math.floor(Math.random() * characters.length));
-  }
+  useEffect(() => {
+    fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments')
+    .then(res => res.json())
+    .then(res => {
+      setDepartments(res.departments)
+    })
+  })
 
-  const changeContentFunc = props.changeContent
-  const showObjectGrid = async departmentId => {
-    let res = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?departmentId=${departmentId}&hasImages=true&isHighlight=true&q=${getQuery()}`)
-      .then(res => res.json()).then(res => res.objectIDs)
-    changeContentFunc('grid', res)
+  const setObjIdsFunc = props.setObjIds
+  const showObjectGrid = departmentId => {
+    fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${departmentId}`)
+      .then(res => res.json()).then(res => {
+        setObjIdsFunc(res.objectIDs.slice(0, 100))
+        navigate('/objects', {replace: true})
+      })
   }
 
   const departImages = {
@@ -37,14 +44,6 @@ function Deparments(props) {
     'Modern Art': ''
   }
 
-  if (departments.length === 0) {
-    fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments')
-    .then(res => res.json())
-    .then(res => {
-      setDepartments(res.departments)
-    })
-  }
-  
   return(
     <div className='cardGrid'>
       {departments.map(e => {
