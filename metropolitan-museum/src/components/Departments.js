@@ -46,12 +46,12 @@ function Deparments(props) {
   }
   
   return(
-    <div id='departmentGrid'>
+    <div className='cardGrid'>
       {departments.map(e => {
         return (
           <div className="card" key={e.departmentId}>
             <div className="imageContainer">
-              <img src={departImages[e.displayName]} className="card-img-top" alt="..." />
+              <img src={departImages[e.displayName]} className="card-img" alt="..." />
             </div>
             <div className="card-body">
               <h5 className="card-title"><button onClick={ () => showObjectGrid(e.departmentId) }>{e.displayName}</button></h5>

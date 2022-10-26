@@ -1,10 +1,8 @@
 import React from "react"
 import RenderContent from "./RenderContent"
 import Deparments from "./Departments"
-import Locations from "./Locations"
 import ObjectGrid from "./ObjectGrid"
 import ObjectPage from "./ObjectPage"
-import Time from "./Time"
 
 class Navigator extends React.Component {
   constructor(props) {
@@ -31,12 +29,6 @@ class Navigator extends React.Component {
       case 'department' :
         component = <Deparments changeContent={ this.setTab } />;
           break;
-      case 'location' :
-          component = <Locations />;
-          break;
-      case 'time' :
-          component = <Time />;
-        break;
       case 'grid':
         component = <ObjectGrid objs={ this.state.objIDs } changeContent={ this.setTab } />
         break
@@ -52,11 +44,11 @@ class Navigator extends React.Component {
 
   render() {
     return (
-      <div>
-        <div id="nav">
+      <div id="nav-control">
+        <h1>I want to explore...</h1>
+        <div>
+          <button type="button" onClick={ () => this.setTab('location') } className="btn btn-primary btn-lg">Random Pick</button>
           <button type="button" onClick={ () => this.setTab('department') } className="btn btn-primary btn-lg">Departments</button>
-          <button type="button" onClick={ () => this.setTab('location') } className="btn btn-primary btn-lg">Locations</button>
-          <button type="button" onClick={ () => this.setTab('time') } className="btn btn-primary btn-lg">Time</button>
         </div>
         <div>
           {this.getComponent()}

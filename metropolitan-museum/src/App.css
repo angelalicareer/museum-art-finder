@@ -36,22 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
 .picture {
   transform: translate3d(-34.6307px, 0px, 0px) scale3d(0.780278, 0.780278, 1);
     z-index: 8
 }
 
-#nav {
+#nav-control {
   margin: 20px;
 }
 
-#nav button {
-  margin: 5px;
+#nav-control button {
+  margin: 10px;
 }
 
 .picks {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   margin: auto;
 }
 
@@ -59,18 +60,23 @@
   width: 95%;
 }
 
-#departmentGrid {
+.cardGrid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
 
 .imageContainer {
-  height: 310px;
+  height: 300px;
   overflow: hidden;
+}
+
+.imageContainer img {
+  object-fit: cover;
 }
 
 .card {
   margin: 5px;
+  height: 300px;
 }
 
 .map-one {
@@ -81,4 +87,28 @@
   padding: 5px;
   margin: auto;
   margin-bottom: 5px;
+}
+
+.art-object {
+  margin: 20px;
+}
+
+.artwork-info {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  text-align: left;
+}
+
+.artwork-info p {
+  text-align: justify;
+}
+
+.art-img {
+  text-align: center;
+}
+
+.artwork-info img {
+  margin: 0 20px;
+  max-height: 500px;
+  max-width: 90%;
 }

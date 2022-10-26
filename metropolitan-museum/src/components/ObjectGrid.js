@@ -26,9 +26,18 @@ class ObjectGrid extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.state.objInfo.filter(o => o.objectID != null).map(o => {
-          return <p key={o.objectID}><button onClick={() => this.changeContentFunc('page', [], o)}>{o.title}</button></p>
+      <div className='cardGrid'>
+        {this.state.objInfo.filter(o => o.objectID != null && o.primaryImageSmall !== "").map(o => {
+          return (
+            <div className="card" key={o.objectID}>
+              <div className="imageContainer">
+                <img src={o.primaryImageSmall} className="card-img-top" alt="..." />
+              </div>
+              <div className="card-body">
+                <button onClick={() => this.changeContentFunc('page', [], o)}>{o.title}</button>
+              </div>
+            </div>
+          )
         })}
       </div>
     )
