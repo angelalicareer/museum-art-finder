@@ -52,12 +52,13 @@
 
 .picks {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   margin: auto;
 }
 
 .picks img {
   width: 95%;
+  opacity: 0.7;
 }
 
 .cardGrid {
@@ -66,17 +67,45 @@
 }
 
 .imageContainer {
-  height: 300px;
+  height: 250px;
   overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.zoom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  height: 250px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.zoom:hover {
+  transform: scale(1.2);
+  z-index: 9999 !important;
+}
+
+.zoom img {
+  z-index: -1 !important;
+  object-fit: fill;
+}
+
+.zoom img:hover {
+  opacity: 1;
+  cursor: pointer;
 }
 
 .imageContainer img {
-  object-fit: cover;
+  object-fit: fill;
+  border-radius: 10px !important;
 }
 
 .card {
   margin: 5px;
   height: 300px;
+  border-radius: 10px !important;
 }
 
 .map-one {
@@ -119,4 +148,39 @@
 
 .userControl button {
   margin-left: 5px;
+}
+
+.landingPage {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 100px 400px 0 200px;
+}
+
+.zoom-lg {
+  height: 400px;
+  width: 150%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  overflow: hidden;
+  border-radius: 20px
+}
+
+.landingPage img {
+  width: 150%;
+}
+
+.customBtn {
+  border: 0ch;
+  background-color: transparent;
+}
+
+.modal-body {
+  text-align: left;
+}
+
+.ToggleSwitch {
+  margin-left: 10px;
+  margin-right: 5px;
 }

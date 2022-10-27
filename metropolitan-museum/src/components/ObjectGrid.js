@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FcLikePlaceholder } from "react-icons/fc";
+import { FcLike } from "react-icons/fc";
 
 function ObjectGrid(props) {
   const [objsInfo, setObjsInfo] = useState([])
@@ -40,7 +40,7 @@ function ObjectGrid(props) {
   const showFavBtn = objId => {
     if (user.id) {
       return (
-          <button className='btn btn-light' onClick={() => addFavorite(objId)}><FcLikePlaceholder /></button>
+        <button className='btn btn-light' onClick={() => addFavorite(objId)}><FcLike /></button>
       )
     } else {
       return ""
@@ -56,7 +56,7 @@ function ObjectGrid(props) {
               <img src={o.primaryImageSmall} className="card-img-top" alt="..." />
             </div>
             <div className="card-body d-flex justify-content-between">
-              <button onClick={() => showObjDetails(o) } title={ o.title }>{o.title.length > 24 ? o.title.slice(0, 24) + "..." : o.title}</button>
+              <button className='customBtn' onClick={() => showObjDetails(o) } title={ o.title + o.objectID}>{o.title.length > 24 ? o.title.slice(0, 24) + "..." : o.title}</button>
               {showFavBtn(o.objectID)}
             </div>
           </div>

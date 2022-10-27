@@ -1,4 +1,6 @@
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+import ScorePassword from '../ScorePassword'
 
 function Header(props) {
   const user = props.user
@@ -6,6 +8,38 @@ function Header(props) {
   const setShowNav = props.setShowNav
   const setObjIdsFunc = props.setObjIds
   const navigate = useNavigate();
+
+  const [strengthOfPassword, setStrenth] = useState('')
+  const [showPassword, togSwitch] = useState(true)
+  const [toggleType, typeSwitch] = useState('password')
+
+  const handleInputchange = event => {
+    const inputValue = event.target.value
+    const obj = ScorePassword (inputValue) 
+    const scores = obj.score
+
+    if (scores < 3){
+      setStrenth('weak')
+    }
+    else if (scores > 5){
+      setStrenth('strong')
+    }
+    else{
+      setStrenth('medium')
+    }
+  }
+  
+  
+
+  const toggleSwitch = event => {
+    if (showPassword){
+      togSwitch(!showPassword)  
+      typeSwitch('text')         
+    }else{
+      togSwitch(!showPassword)  
+      typeSwitch('password')      
+    }
+  }     
 
   const login = () => {
     const email = document.getElementById('login-email').value
@@ -18,6 +52,9 @@ function Header(props) {
       setUser(user)
       sessionStorage.setItem('user', JSON.stringify(user))
     })
+
+    document.getElementById('login-email').value = ''
+    document.getElementById('login-pass').value = ''
   }
 
   const signup = () => {
@@ -28,10 +65,12 @@ function Header(props) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({name: name, email: email, pass: pass})
-    }).then(res => res.json()).then(user => {
-      setUser(user)
-      sessionStorage.setItem('user', JSON.stringify(user))
     })
+
+    document.getElementById('signup-name').value = ''
+    document.getElementById('signup-email').value = ''
+    document.getElementById('signup-pass').value = ''
+    navigate('/', {replace: true})
   }
 
   const logout = () => {
@@ -59,14 +98,17 @@ function Header(props) {
 
   const searchArt = () => {
     const query = document.getElementById('searchBox').value
-    console.log(query)
-    fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?q=${query}`)
+    fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?q=${query}`, {
+      credentials: "same-origin",
+      Cookie: "SameSite=none; Secure"
+    })
       .then(res => res.json()).then(objs => {
-        console.log(objs)
-        setObjIdsFunc(objs.slice(0,100))
+        setObjIdsFunc(objs.objectIDs.slice(0,100))
         setShowNav(true)
         navigate('/objects', {replace: true})
       })
+    
+    document.getElementById('searchBox').value = ''
   }
   
   const showUserControl = () => {
@@ -106,10 +148,10 @@ function Header(props) {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">           
             </ul>
-            <form className="d-flex">
+            <div className="d-flex">
               <input className="form-control me-2" type="search" id="searchBox" placeholder="Search" aria-label="Search" />
               <button className="btn btn-outline-success" onClick={searchArt}>Search</button>
-            </form>
+            </div>
             {showUserControl()}
           </div>
         </div>
@@ -123,12 +165,14 @@ function Header(props) {
           </div>
           <div className="modal-body">
             <div className="row">
-              <div className="col"><label htmlFor="email">Email: </label></div>
+              <div className="col-3"><label htmlFor="email">Email: </label></div>
               <div className="col"><input type="text" id="login-email"/></div>
             </div>
             <div className="row">
-              <div className="col"><label htmlFor="pass">Password: </label></div>
-              <div className="col"><input type="password" id="login-pass"/></div>
+              <div className="col-3"><label htmlFor="pass">Password: </label></div>
+                <div className="col">
+                  <input type="password" id="login-pass"/>
+                </div>
             </div> 
           </div>
           <div className="modal-footer">
@@ -146,16 +190,21 @@ function Header(props) {
           </div>
             <div className="modal-body">
                <div className="row">
-                <div className="col"><label htmlFor="name">Name: </label></div>
+                <div className="col-3"><label htmlFor="name">Name: </label></div>
                 <div className="col"><input type="text" id="signup-name"/></div>
               </div>
               <div className="row">
-                <div className="col"><label htmlFor="email">Email: </label></div>
+                <div className="col-3"><label htmlFor="email">Email: </label></div>
                 <div className="col"><input type="text" id="signup-email"/></div>
               </div>
               <div className="row">
-                <div className="col"><label htmlFor="pass">Password: </label></div>
-                <div className="col"><input type="password" id="signup-pass"/></div>
+                <div className="col-3"><label htmlFor="pass">Password: </label></div>
+                <div className="col">
+                  <input type={toggleType} id="signup-pass" onChange={event => handleInputchange(event)} />
+                  <input type="checkbox" className="ToggleSwitch" onClick={event =>toggleSwitch(event)} />
+                  <span>Show Password</span>
+                  <h6>{strengthOfPassword}</h6>
+                </div>
               </div> 
           </div>
           <div className="modal-footer">

@@ -1,32 +1,52 @@
 import React from "react"
+import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
-class RenderContent extends React.Component {
+function RenderContent(props) {
+  const [picks, setPicks] = useState([])
+  const setCurrentObj = props.setCurrentObj
+  const navigate = useNavigate();
 
-  state = {
-      content : '',
-      imageUrl : '',
-      listOfDepartments : ['name1', 'name2', 'name3']
+  const showObjDetails = obj => {
+    setCurrentObj(obj)
+    navigate('/object', {replace: true})
   }
 
-  onClick = event => {
-    this.setState(this.state.listOfDepartments)
-  }
-  
-  render() {
-    return(
-      <div className="picks">    
-        <a href="">
-        <img src="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=663&height=800&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FvT9-6ow1_5WbpJEMVWoymg%2Fnormalized.jpg" alt="" /></a>
-        <a href="">
-          <img src="https://cdn.myminifactory.com/assets/object-assets/58e65aa1b6483/images/720X720-untitled.jpg" alt="" />
-        </a>
-        <a href="">
-          <img src="https://d3t7modobimpp4.cloudfront.net/uploads/_1920x784_crop_center-center_none/shutterstock_441157258.jpg" alt="" />
-        </a>
-      </div>
-  )}
+  useEffect(() => {
+    fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments')
+      .then(res => res.json())
+      .then(res => {
+        var departmentId = res.departments[Math.floor(Math.random() * res.departments.length)].departmentId
+        fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=${departmentId}`)
+          .then(res => res.json()).then(res => {
+            let objs = res.objectIDs.slice(0, 48)
+            for (var i = 0; i < objs.length; i++) {
+              fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objs[i]}`, {
+                credentials: "same-origin",
+                Cookie: "SameSite=none; Secure"
+              }).then(res => res.json()).then(res => {
+                if (res.objectID != null && res.primaryImageSmall !== "") {
+                  setPicks(arr => [...arr, res])
+                }
+              })
+            }
+        })
+      })
+  },[])
+
+  return (
+    <div className="picks">    
+      {picks.slice(0,12).map(p => {
+        return (
+          <div className="zoom" key={p.objectID}>
+            <a onClick={() => showObjDetails(p)}>
+              <img src={p.primaryImageSmall} className="card-img" alt="..." />
+            </a>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
-
-
 
 export default RenderContent
