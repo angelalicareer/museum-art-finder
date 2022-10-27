@@ -4,7 +4,7 @@ class ObjectPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      obj: props.obj,
+      obj: props.currentObj,
       desc: null
     }
 
@@ -42,7 +42,6 @@ class ObjectPage extends React.Component {
           </div>
         </div>
         <div>
-
         </div>
       </div>
     )

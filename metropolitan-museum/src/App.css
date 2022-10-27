@@ -112,3 +112,11 @@
   max-height: 500px;
   max-width: 90%;
 }
+
+.userControl {
+  margin-left: 10px;
+}
+
+.userControl button {
+  margin-left: 5px;
+}

@@ -1,7 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
-function Navigator() {
+function Navigator(props) {
   const navigate = useNavigate();
+
+  if (!props.showNav) {
+    return ""
+  }
 
   return (
     <div id="nav-control">
