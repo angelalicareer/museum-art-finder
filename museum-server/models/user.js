@@ -1,4 +1,5 @@
 const db = require('../db/db')
+const pg = require('pg')
 
 const User = {
   create: (name, email, passwordDigest) => {

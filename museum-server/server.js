@@ -3,7 +3,7 @@ const sessions = require('./sessions')
 const User = require('./models/user')
 const bcrypt = require('bcrypt')
 var cors = require('cors')
-const port = 3001
+const port = process.env.PORT || 3001;
 
 const app = express()
 app.listen(port, () => console.log(`Server listening on ${port}`))
