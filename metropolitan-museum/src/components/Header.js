@@ -4,8 +4,8 @@ function Header(props) {
   const user = props.user
   const setUser = props.setUser
   const setShowNav = props.setShowNav
-  const navigate = useNavigate();
   const setObjIdsFunc = props.setObjIds
+  const navigate = useNavigate();
 
   const login = () => {
     const email = document.getElementById('login-email').value
@@ -40,6 +40,8 @@ function Header(props) {
     }).then(res => {
       setUser({})
       sessionStorage.removeItem('user')
+      setShowNav(true)
+      navigate('/', {replace: true})
     })
   }
 
@@ -53,6 +55,18 @@ function Header(props) {
       setShowNav(false)
       navigate('/objects', {replace: true})
     })
+  }
+
+  const searchArt = () => {
+    const query = document.getElementById('searchBox').value
+    console.log(query)
+    fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?q=${query}`)
+      .then(res => res.json()).then(objs => {
+        console.log(objs)
+        setObjIdsFunc(objs.slice(0,100))
+        setShowNav(true)
+        navigate('/objects', {replace: true})
+      })
   }
   
   const showUserControl = () => {
@@ -93,8 +107,8 @@ function Header(props) {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">           
             </ul>
             <form className="d-flex">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-              <button className="btn btn-outline-success" type="submit">Search</button>
+              <input className="form-control me-2" type="search" id="searchBox" placeholder="Search" aria-label="Search" />
+              <button className="btn btn-outline-success" onClick={searchArt}>Search</button>
             </form>
             {showUserControl()}
           </div>
@@ -114,12 +128,11 @@ function Header(props) {
             </div>
             <div className="row">
               <div className="col"><label htmlFor="pass">Password: </label></div>
-              <div className="col"><input type="text" id="login-pass"/></div>
+              <div className="col"><input type="password" id="login-pass"/></div>
             </div> 
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary" onClick={login}>Login</button>
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={login}>Login</button>
           </div>
         </div>
       </div>
@@ -142,12 +155,11 @@ function Header(props) {
               </div>
               <div className="row">
                 <div className="col"><label htmlFor="pass">Password: </label></div>
-                <div className="col"><input type="text" id="signup-pass"/></div>
+                <div className="col"><input type="password" id="signup-pass"/></div>
               </div> 
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary" onClick={signup}>Signup</button>
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={signup}>Signup</button>
           </div>
         </div>
       </div>
